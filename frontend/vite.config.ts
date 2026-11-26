@@ -8,6 +8,7 @@ export default defineConfig(({ mode }) => {
   return {
     plugins: [react(), tailwind()],
     server: {
+      host: env.DEV_HOST || undefined,
       strictPort: true,
       proxy: {
         '/api': { target, changeOrigin: true },
