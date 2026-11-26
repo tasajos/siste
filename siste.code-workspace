@@ -1,0 +1,9 @@
+{
+  "folders": [
+    { "name": "Frontend · React", "path": "frontend" },
+    { "name": "Backend · Express", "path": "backend" },
+    { "name": "Database · MySQL", "path": "database" },
+    { "name": "Proyecto", "path": "." }
+  ],
+  "settings": { "files.eol": "\n" }
+}

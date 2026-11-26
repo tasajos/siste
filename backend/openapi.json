@@ -1,0 +1,3127 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Mi Comunidad Segura",
+    "version": "1.0.0",
+    "description": "API REST para el proyecto académico de Cochabamba. Los ejemplos usan datos ficticios."
+  },
+  "servers": [
+    {
+      "url": "/api/v1"
+    }
+  ],
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "paths": {
+    "/health": {
+      "get": {
+        "summary": "Estado de API y MySQL",
+        "responses": {
+          "200": {
+            "description": "Operación aplicada"
+          },
+          "default": {
+            "description": "Error de autorización, validación o disponibilidad",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/auth/register": {
+      "post": {
+        "summary": "Registrar cuenta",
+        "responses": {
+          "201": {
+            "description": "Operación aplicada"
+          },
+          "default": {
+            "description": "Error de autorización, validación o disponibilidad",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "security": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {
+                "nombre": "Vecina de prueba",
+                "correo": "vecina@example.com",
+                "clave": "Contraseña local"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "summary": "Iniciar sesión",
+        "responses": {
+          "200": {
+            "description": "Operación aplicada"
+          },
+          "default": {
+            "description": "Error de autorización, validación o disponibilidad",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "security": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {
+                "correo": "vecina@example.com",
+                "clave": "Contraseña local"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/refresh": {
+      "post": {
+        "summary": "Renovar sesión",
+        "responses": {
+          "200": {
+            "description": "Operación aplicada"
+          },
+          "default": {
+            "description": "Error de autorización, validación o disponibilidad",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ]
+      }
+    },
+    "/auth/logout": {
+      "post": {
+        "summary": "Cerrar sesión",
+        "responses": {
+          "204": {
+            "description": "Operación aplicada"
+          },
+          "default": {
+            "description": "Error de autorización, validación o disponibilidad",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ]
+      }
+    },
+    "/auth/me": {
+      "get": {
+        "summary": "Consultar perfil",
+        "responses": {
+          "200": {
+            "description": "Operación aplicada"
+          },
+          "default": {
+            "description": "Error de autorización, validación o disponibilidad",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "summary": "Actualizar perfil",
+        "responses": {
+          "200": {
+            "description": "Operación aplicada"
+          },
+          "default": {
+            "description": "Error de autorización, validación o disponibilidad",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {
+                "nombre": "Vecina de prueba"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/usuarios": {
+      "get": {
+        "summary": "Listar usuarios",
+        "responses": {
+          "200": {
+            "description": "Operación aplicada"
+          },
+          "default": {
+            "description": "Error de autorización, validación o disponibilidad",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "q",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/usuarios/{id}": {
+      "get": {
+        "summary": "Consultar usuario",
+        "responses": {
+          "200": {
+            "description": "Operación aplicada"
+          },
+          "default": {
+            "description": "Error de autorización, validación o disponibilidad",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ]
+      },
+      "patch": {
+        "summary": "Modificar rol o nombre",
+        "responses": {
+          "204": {
+            "description": "Operación aplicada"
+          },
+          "default": {
+            "description": "Error de autorización, validación o disponibilidad",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {
+                "rol": "operador"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/usuarios/{id}/estado": {
+      "patch": {
+        "summary": "Activar o desactivar usuario",
+        "responses": {
+          "204": {
+            "description": "Operación aplicada"
+          },
+          "default": {
+            "description": "Error de autorización, validación o disponibilidad",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {
+                "activo": true
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auditorias": {
+      "get": {
+        "summary": "Listar auditoría",
+        "responses": {
+          "200": {
+            "description": "Operación aplicada"
+          },
+          "default": {
+            "description": "Error de autorización, validación o disponibilidad",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ]
+      }
+    },
+    "/emergencias": {
+      "get": {
+        "summary": "Listar incidentes visibles",
+        "responses": {
+          "200": {
+            "description": "Operación aplicada"
+          },
+          "default": {
+            "description": "Error de autorización, validación o disponibilidad",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "q",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "tipo",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "estado",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "verificacion",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "prioridad",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "provincia_id",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "municipio_id",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "desde",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "hasta",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "post": {
+        "summary": "Crear emergencia",
+        "responses": {
+          "201": {
+            "description": "Operación aplicada"
+          },
+          "default": {
+            "description": "Error de autorización, validación o disponibilidad",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {
+                "titulo": "Simulacro de incendio",
+                "tipo": "incendio_forestal",
+                "descripcion": "Reporte ficticio para pruebas.",
+                "municipio_id": 30903,
+                "fecha": "2026-11-25T11:00:00-04:00",
+                "prioridad": "media"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/emergencias/{id}": {
+      "get": {
+        "summary": "Consultar incidente",
+        "responses": {
+          "200": {
+            "description": "Operación aplicada"
+          },
+          "default": {
+            "description": "Error de autorización, validación o disponibilidad",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ]
+      },
+      "patch": {
+        "summary": "Editar incidente",
+        "responses": {
+          "204": {
+            "description": "Operación aplicada"
+          },
+          "default": {
+            "description": "Error de autorización, validación o disponibilidad",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {
+                "observaciones": "Revisión del ejercicio."
+              }
+            }
+          }
+        }
+      }
+    },
+    "/emergencias/{id}/estado": {
+      "patch": {
+        "summary": "Cambiar estado",
+        "responses": {
+          "204": {
+            "description": "Operación aplicada"
+          },
+          "default": {
+            "description": "Error de autorización, validación o disponibilidad",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {
+                "estado": "en_atencion"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/emergencias/{id}/verificacion": {
+      "patch": {
+        "summary": "Verificar o autorizar difusión",
+        "responses": {
+          "204": {
+            "description": "Operación aplicada"
+          },
+          "default": {
+            "description": "Error de autorización, validación o disponibilidad",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {
+                "verificacion": "verificada",
+                "alerta_publica": false
+              }
+            }
+          }
+        }
+      }
+    },
+    "/emergencias/{id}/historial": {
+      "get": {
+        "summary": "Consultar historial privado",
+        "responses": {
+          "200": {
+            "description": "Operación aplicada"
+          },
+          "default": {
+            "description": "Error de autorización, validación o disponibilidad",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ]
+      }
+    },
+    "/emergencias/{id}/evidencia": {
+      "get": {
+        "summary": "Obtener fotografía privada",
+        "responses": {
+          "200": {
+            "description": "Operación aplicada"
+          },
+          "default": {
+            "description": "Error de autorización, validación o disponibilidad",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ]
+      }
+    },
+    "/departamentos": {
+      "get": {
+        "summary": "Listar departamentos",
+        "responses": {
+          "200": {
+            "description": "Operación aplicada"
+          },
+          "default": {
+            "description": "Error de autorización, validación o disponibilidad",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/provincias": {
+      "get": {
+        "summary": "Listar provincias",
+        "responses": {
+          "200": {
+            "description": "Operación aplicada"
+          },
+          "default": {
+            "description": "Error de autorización, validación o disponibilidad",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "departamento_id",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ]
+      }
+    },
+    "/municipios": {
+      "get": {
+        "summary": "Listar municipios",
+        "responses": {
+          "200": {
+            "description": "Operación aplicada"
+          },
+          "default": {
+            "description": "Error de autorización, validación o disponibilidad",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "provincia_id",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ]
+      }
+    },
+    "/comunidades": {
+      "get": {
+        "summary": "Listar comunidades",
+        "responses": {
+          "200": {
+            "description": "Operación aplicada"
+          },
+          "default": {
+            "description": "Error de autorización, validación o disponibilidad",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "municipio_id",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ]
+      },
+      "post": {
+        "summary": "Registrar comunidad con fuente",
+        "responses": {
+          "201": {
+            "description": "Operación aplicada"
+          },
+          "default": {
+            "description": "Error de autorización, validación o disponibilidad",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {
+                "nombre": "Comunidad",
+                "municipio_id": 30903,
+                "fuente": "https://example.com/territorio"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/catalogos/{catalogo}": {
+      "get": {
+        "summary": "Consultar catálogo",
+        "responses": {
+          "200": {
+            "description": "Operación aplicada"
+          },
+          "default": {
+            "description": "Error de autorización, validación o disponibilidad",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "catalogo",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/personas/{id}/seguimiento": {
+      "get": {
+        "summary": "Consultar historial",
+        "responses": {
+          "200": {
+            "description": "Operación aplicada"
+          },
+          "default": {
+            "description": "Error de autorización, validación o disponibilidad",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ]
+      },
+      "post": {
+        "summary": "Registrar seguimiento",
+        "responses": {
+          "201": {
+            "description": "Operación aplicada"
+          },
+          "default": {
+            "description": "Error de autorización, validación o disponibilidad",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {
+                "estado": "localizada",
+                "verificacion": "verificada",
+                "observaciones": "Ejercicio"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/equipos/{id}/integrantes": {
+      "post": {
+        "summary": "Vincular integrante",
+        "responses": {
+          "201": {
+            "description": "Operación aplicada"
+          },
+          "default": {
+            "description": "Error de autorización, validación o disponibilidad",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {
+                "usuario_id": 1
+              }
+            }
+          }
+        }
+      }
+    },
+    "/equipos/{id}/disponibilidad": {
+      "patch": {
+        "summary": "Actualizar disponibilidad del equipo propio",
+        "responses": {
+          "204": {
+            "description": "Operación aplicada"
+          },
+          "default": {
+            "description": "Error de autorización, validación o disponibilidad",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {
+                "estado": "disponible"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/operaciones/{id}/asignaciones": {
+      "get": {
+        "summary": "Consultar asignaciones y avances",
+        "responses": {
+          "200": {
+            "description": "Operación aplicada"
+          },
+          "default": {
+            "description": "Error de autorización, validación o disponibilidad",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ]
+      }
+    },
+    "/operaciones/{id}/equipos": {
+      "post": {
+        "summary": "Asignar equipo",
+        "responses": {
+          "201": {
+            "description": "Operación aplicada"
+          },
+          "default": {
+            "description": "Error de autorización, validación o disponibilidad",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {
+                "equipo_id": 1
+              }
+            }
+          }
+        }
+      }
+    },
+    "/operaciones/{id}/recursos": {
+      "post": {
+        "summary": "Asignar recurso",
+        "responses": {
+          "201": {
+            "description": "Operación aplicada"
+          },
+          "default": {
+            "description": "Error de autorización, validación o disponibilidad",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {
+                "recurso_id": 1,
+                "cantidad": 2
+              }
+            }
+          }
+        }
+      }
+    },
+    "/operaciones/{id}/avances": {
+      "post": {
+        "summary": "Registrar avance",
+        "responses": {
+          "201": {
+            "description": "Operación aplicada"
+          },
+          "default": {
+            "description": "Error de autorización, validación o disponibilidad",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {
+                "detalle": "Avance ficticio"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/recursos/{id}/movimientos": {
+      "get": {
+        "summary": "Consultar movimientos",
+        "responses": {
+          "200": {
+            "description": "Operación aplicada"
+          },
+          "default": {
+            "description": "Error de autorización, validación o disponibilidad",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ]
+      },
+      "post": {
+        "summary": "Registrar entrada o salida",
+        "responses": {
+          "201": {
+            "description": "Operación aplicada"
+          },
+          "default": {
+            "description": "Error de autorización, validación o disponibilidad",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {
+                "tipo": "entrada",
+                "cantidad": 2
+              }
+            }
+          }
+        }
+      }
+    },
+    "/responsables": {
+      "get": {
+        "summary": "Listar responsables",
+        "responses": {
+          "200": {
+            "description": "Operación aplicada"
+          },
+          "default": {
+            "description": "Error de autorización, validación o disponibilidad",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/usuarios-equipo": {
+      "get": {
+        "summary": "Listar miembros autorizados",
+        "responses": {
+          "200": {
+            "description": "Operación aplicada"
+          },
+          "default": {
+            "description": "Error de autorización, validación o disponibilidad",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/centro-operaciones/resumen": {
+      "get": {
+        "summary": "Consultar estado del centro",
+        "responses": {
+          "200": {
+            "description": "Operación aplicada"
+          },
+          "default": {
+            "description": "Error de autorización, validación o disponibilidad",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "q",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "tipo",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "estado",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "verificacion",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "prioridad",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "provincia_id",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "municipio_id",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "desde",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "hasta",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/reportes/resumen": {
+      "get": {
+        "summary": "Consultar indicadores",
+        "responses": {
+          "200": {
+            "description": "Operación aplicada"
+          },
+          "default": {
+            "description": "Error de autorización, validación o disponibilidad",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "q",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "tipo",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "estado",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "verificacion",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "prioridad",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "provincia_id",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "municipio_id",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "desde",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "hasta",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/reportes/emergencias": {
+      "get": {
+        "summary": "Agrupar emergencias",
+        "responses": {
+          "200": {
+            "description": "Operación aplicada"
+          },
+          "default": {
+            "description": "Error de autorización, validación o disponibilidad",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "q",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "tipo",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "estado",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "verificacion",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "prioridad",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "provincia_id",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "municipio_id",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "desde",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "hasta",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/reportes/personas": {
+      "get": {
+        "summary": "Resumir seguimiento de personas",
+        "responses": {
+          "200": {
+            "description": "Operación aplicada"
+          },
+          "default": {
+            "description": "Error de autorización, validación o disponibilidad",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "municipio_id",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "desde",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "hasta",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/reportes/recursos": {
+      "get": {
+        "summary": "Resumir existencias",
+        "responses": {
+          "200": {
+            "description": "Operación aplicada"
+          },
+          "default": {
+            "description": "Error de autorización, validación o disponibilidad",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/reportes/operaciones": {
+      "get": {
+        "summary": "Resumir operaciones",
+        "responses": {
+          "200": {
+            "description": "Operación aplicada"
+          },
+          "default": {
+            "description": "Error de autorización, validación o disponibilidad",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "municipio_id",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ]
+      }
+    },
+    "/reportes/refugios": {
+      "get": {
+        "summary": "Consultar ocupación",
+        "responses": {
+          "200": {
+            "description": "Operación aplicada"
+          },
+          "default": {
+            "description": "Error de autorización, validación o disponibilidad",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "municipio_id",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ]
+      }
+    },
+    "/notificaciones": {
+      "get": {
+        "summary": "Listar notificaciones propias",
+        "responses": {
+          "200": {
+            "description": "Operación aplicada"
+          },
+          "default": {
+            "description": "Error de autorización, validación o disponibilidad",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ]
+      }
+    },
+    "/notificaciones/{id}/leer": {
+      "patch": {
+        "summary": "Registrar lectura",
+        "responses": {
+          "204": {
+            "description": "Operación aplicada"
+          },
+          "default": {
+            "description": "Error de autorización, validación o disponibilidad",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+       ]
+      }
+    },
+    "/personas": {
+      "get": {
+        "summary": "Listar personas",
+        "responses": {
+          "200": {
+            "description": "Operación aplicada"
+          },
+          "default": {
+            "description": "Error de autorización, validación o disponibilidad",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "q",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "post": {
+        "summary": "Crear registro",
+        "responses": {
+          "201": {
+            "description": "Operación aplicada"
+          },
+          "default": {
+            "description": "Error de autorización, validación o disponibilidad",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {
+                "emergencia_id": 1,
+                "nombre": "Caso ficticio",
+                "ubicacion": "Lugar de prueba",
+                "fecha": "2026-11-25T11:00:00-04:00"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/personas/{id}": {
+      "get": {
+        "summary": "Consultar ficha",
+        "responses": {
+          "200": {
+            "description": "Operación aplicada"
+          },
+          "default": {
+            "description": "Error de autorización, validación o disponibilidad",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ]
+      },
+      "patch": {
+        "summary": "Editar ficha",
+        "responses": {
+          "204": {
+            "description": "Operación aplicada"
+          },
+          "default": {
+            "description": "Error de autorización, validación o disponibilidad",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {
+                "emergencia_id": 1,
+                "nombre": "Caso ficticio",
+                "ubicacion": "Lugar de prueba",
+                "fecha": "2026-11-25T11:00:00-04:00"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/instituciones": {
+      "get": {
+        "summary": "Listar instituciones",
+        "responses": {
+          "200": {
+            "description": "Operación aplicada"
+          },
+          "default": {
+            "description": "Error de autorización, validación o disponibilidad",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "q",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "post": {
+        "summary": "Crear registro",
+        "responses": {
+          "201": {
+            "description": "Operación aplicada"
+          },
+          "default": {
+            "description": "Error de autorización, validación o disponibilidad",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {
+                "nombre": "Ejercicio",
+                "tipo": "rescate"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/instituciones/{id}": {
+      "get": {
+        "summary": "Consultar ficha",
+        "responses": {
+          "200": {
+            "description": "Operación aplicada"
+          },
+          "default": {
+            "description": "Error de autorización, validación o disponibilidad",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ]
+      },
+      "patch": {
+        "summary": "Editar ficha",
+        "responses": {
+          "204": {
+            "description": "Operación aplicada"
+          },
+          "default": {
+            "description": "Error de autorización, validación o disponibilidad",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {
+                "nombre": "Ejercicio",
+                "tipo": "rescate"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/equipos": {
+      "get": {
+        "summary": "Listar equipos",
+        "responses": {
+          "200": {
+            "description": "Operación aplicada"
+          },
+          "default": {
+            "description": "Error de autorización, validación o disponibilidad",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "q",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "post": {
+        "summary": "Crear registro",
+        "responses": {
+          "201": {
+            "description": "Operación aplicada"
+          },
+          "default": {
+            "description": "Error de autorización, validación o disponibilidad",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {
+                "nombre": "Equipo de prueba",
+                "institucion_id": 1,
+                "responsable": "Responsable ficticio",
+                "municipio_id": 30903,
+                "integrantes": 3
+              }
+            }
+          }
+        }
+      }
+    },
+    "/equipos/{id}": {
+      "get": {
+        "summary": "Consultar ficha",
+        "responses": {
+          "200": {
+            "description": "Operación aplicada"
+          },
+          "default": {
+            "description": "Error de autorización, validación o disponibilidad",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ]
+      },
+      "patch": {
+        "summary": "Editar ficha",
+        "responses": {
+          "204": {
+            "description": "Operación aplicada"
+          },
+          "default": {
+            "description": "Error de autorización, validación o disponibilidad",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {
+                "nombre": "Equipo de prueba",
+                "institucion_id": 1,
+                "responsable": "Responsable ficticio",
+                "municipio_id": 30903,
+                "integrantes": 3
+              }
+            }
+          }
+        }
+      }
+    },
+    "/operaciones": {
+      "get": {
+        "summary": "Listar operaciones",
+        "responses": {
+          "200": {
+            "description": "Operación aplicada"
+          },
+          "default": {
+            "description": "Error de autorización, validación o disponibilidad",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "q",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "post": {
+        "summary": "Crear registro",
+        "responses": {
+          "201": {
+            "description": "Operación aplicada"
+          },
+          "default": {
+            "description": "Error de autorización, validación o disponibilidad",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {
+                "emergencia_id": 1,
+                "nombre": "Plan de simulacro",
+                "descripcion": "Coordinación de prueba",
+                "responsable_id": 1
+              }
+            }
+          }
+        }
+      }
+    },
+    "/operaciones/{id}": {
+      "get": {
+        "summary": "Consultar ficha",
+        "responses": {
+          "200": {
+            "description": "Operación aplicada"
+          },
+          "default": {
+            "description": "Error de autorización, validación o disponibilidad",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ]
+      },
+      "patch": {
+        "summary": "Editar ficha",
+        "responses": {
+          "204": {
+            "description": "Operación aplicada"
+          },
+          "default": {
+            "description": "Error de autorización, validación o disponibilidad",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {
+                "emergencia_id": 1,
+                "nombre": "Plan de simulacro",
+                "descripcion": "Coordinación de prueba",
+                "responsable_id": 1
+              }
+            }
+          }
+        }
+      }
+    },"/recursos": {
+      "get": {
+        "summary": "Listar recursos",
+        "responses": {
+          "200": {
+            "description": "Operación aplicada"
+          },
+          "default": {
+            "description": "Error de autorización, validación o disponibilidad",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "q",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "post": {
+        "summary": "Crear registro",
+        "responses": {
+          "201": {
+            "description": "Operación aplicada"
+          },
+          "default": {
+            "description": "Error de autorización, validación o disponibilidad",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {
+                "nombre": "Agua de prueba",
+                "categoria": "agua",
+                "minimo": 0,
+                "unidad": "bidón",
+                "ubicacion": "Depósito ficticio",
+                "responsable": "Responsable ficticio"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/recursos/{id}": {
+      "get": {
+        "summary": "Consultar ficha",
+        "responses": {
+          "200": {
+            "description": "Operación aplicada"
+          },
+          "default": {
+            "description": "Error de autorización, validación o disponibilidad",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ]
+      },
+      "patch": {
+        "summary": "Editar ficha",
+        "responses": {
+          "204": {
+            "description": "Operación aplicada"
+          },
+          "default": {
+            "description": "Error de autorización, validación o disponibilidad",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {
+                "nombre": "Agua de prueba",
+                "categoria": "agua",
+                "minimo": 0,
+                "unidad": "bidón",
+                "ubicacion": "Depósito ficticio",
+                "responsable": "Responsable ficticio"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/refugios": {
+      "get": {
+        "summary": "Listar refugios",
+        "responses": {
+          "200": {
+            "description": "Operación aplicada"
+          },
+          "default": {
+            "description": "Error de autorización, validación o disponibilidad",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "q",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "post": {
+        "summary": "Crear registro",
+        "responses": {
+          "201": {
+            "description": "Operación aplicada"
+          },
+          "default": {
+            "description": "Error de autorización, validación o disponibilidad",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {
+                "nombre": "Refugio ficticio",
+                "municipio_id": 30903,
+                "direccion": "Lugar de prueba",
+                "latitud": -17.33,
+                "longitud": -66.22,
+                "capacidad": 20,
+                "ocupacion": 0,
+                "responsable": "Ejercicio",
+                "activo": true
+              }
+            }
+          }
+        }
+      }
+    },
+    "/refugios/{id}": {
+      "get": {
+        "summary": "Consultar ficha",
+        "responses": {
+          "200": {
+            "description": "Operación aplicada"
+          },
+          "default": {
+            "description": "Error de autorización, validación o disponibilidad",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ]
+      },
+      "patch": {
+        "summary": "Editar ficha",
+        "responses": {
+          "204": {
+            "description": "Operación aplicada"
+          },
+          "default": {
+            "description": "Error de autorización, validación o disponibilidad",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {
+                "nombre": "Refugio ficticio",
+                "municipio_id": 30903,
+                "direccion": "Lugar de prueba",
+                "latitud": -17.33,
+                "longitud": -66.22,
+                "capacidad": 20,
+                "ocupacion": 0,
+                "responsable": "Ejercicio",
+                "activo": true
+              }
+            }
+          }
+        }
+      }
+    },
+    "/evacuaciones": {
+      "get": {
+        "summary": "Listar evacuaciones",
+        "responses": {
+          "200": {
+            "description": "Operación aplicada"
+          },
+          "default": {
+            "description": "Error de autorización, validación o disponibilidad",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "q",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "post": {
+        "summary": "Crear registro",
+        "responses": {
+          "201": {
+            "description": "Operación aplicada"
+          },
+          "default": {
+            "description": "Error de autorización, validación o disponibilidad",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {
+                "emergencia_id": 1,
+                "origen": "Lugar de prueba",
+                "destino": "Refugio ficticio",
+                "personas": 2,
+                "equipo_id": 1,
+                "fecha": "2026-11-25T11:00:00-04:00",
+                "estado": "registrada"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/evacuaciones/{id}": {
+      "get": {
+        "summary": "Consultar ficha",
+        "responses": {
+          "200": {
+            "description": "Operación aplicada"
+          },
+          "default": {
+            "description": "Error de autorización, validación o disponibilidad",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ]
+      },
+      "patch": {
+        "summary": "Editar ficha",
+        "responses": {
+          "204": {
+            "description": "Operación aplicada"
+          },
+          "default": {
+            "description": "Error de autorización, validación o disponibilidad",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {
+                "emergencia_id": 1,
+                "origen": "Lugar de prueba",
+                "destino": "Refugio ficticio",
+                "personas": 2,
+                "equipo_id": 1,
+                "fecha": "2026-11-25T11:00:00-04:00",
+                "estado": "registrada"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/contactos": {
+      "get": {
+        "summary": "Listar contactos",
+        "responses": {
+          "200": {
+            "description": "Operación aplicada"
+          },
+          "default": {
+            "description": "Error de autorización, validación o disponibilidad",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "q",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "post": {
+        "summary": "Crear registro",
+        "responses": {
+          "201": {
+            "description": "Operación aplicada"
+          },
+          "default": {
+            "description": "Error de autorización, validación o disponibilidad",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {
+                "nombre": "Ejemplo de ficha",
+                "categoria": "hospital",
+                "telefono": "000000",
+                "cobertura": "Simulacro",
+                "fuente": "https://example.com",
+                "verificado": false
+              }
+            }
+          }
+        }
+      }
+    },
+    "/contactos/{id}": {
+      "get": {
+        "summary": "Consultar ficha",
+        "responses": {
+          "200": {
+            "description": "Operación aplicada"
+          },
+          "default": {
+            "description": "Error de autorización, validación o disponibilidad",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ]
+      },
+      "patch": {
+        "summary": "Editar ficha",
+        "responses": {
+          "204": {
+            "description": "Operación aplicada"
+          },
+          "default": {
+            "description": "Error de autorización, validación o disponibilidad","content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {
+                "nombre": "Ejemplo de ficha",
+                "categoria": "hospital",
+                "telefono": "000000",
+                "cobertura": "Simulacro",
+                "fuente": "https://example.com",
+                "verificado": false
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      },
+      "cookieAuth": {
+        "type": "apiKey",
+        "in": "cookie",
+        "name": "comunidad_refresh"
+      }
+    },
+    "schemas": {
+      "Error": {
+        "type": "object",
+        "required": [
+          "error"
+        ],
+        "properties": {
+          "error": {
+            "type": "string"
+          },
+          "campos": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "campo": {
+                  "type": "string"
+                },
+                "mensaje": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

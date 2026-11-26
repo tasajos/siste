@@ -1,0 +1,365 @@
+Table roles {
+  clave varchar(24) [pk]
+  nombre varchar(60) [not null]
+}
+
+Table usuarios {
+  id "int unsigned" [pk, increment]
+  nombre varchar(100) [not null]
+  correo varchar(254) [not null, unique]
+  password_hash varchar(60) [not null]
+  rol varchar(24) [not null]
+  activo boolean [not null]
+  creado_en timestamp [not null]
+  actualizado_en timestamp [not null]
+}
+
+Table sesiones {
+  id char(36) [pk]
+  usuario_id "int unsigned" [not null]
+  refresh_hash char(64) [not null]
+  vence_en datetime [not null]
+  creado_en timestamp [not null]
+}
+
+Table auditorias {
+  id "bigint unsigned" [pk, increment]
+  usuario_id "int unsigned" [not null]
+  entidad varchar(50) [not null]
+  registro_id "int unsigned" [not null]
+  accion varchar(32) [not null]
+  creado_en timestamp [not null]
+}
+
+Table departamentos {
+  id "int unsigned" [pk]
+  nombre varchar(80) [not null, unique]
+}
+
+Table provincias {
+  id "int unsigned" [pk]
+  departamento_id "int unsigned" [not null]
+  nombre varchar(80) [not null]
+  indexes {
+    (departamento_id, nombre) [unique]
+  }
+}
+
+Table municipios {
+  id "int unsigned" [pk]
+  provincia_id "int unsigned" [not null]
+  nombre varchar(80) [not null]
+  indexes {
+    (provincia_id, nombre) [unique]
+  }
+}
+
+Table comunidades {
+  id "int unsigned" [pk, increment]
+  municipio_id "int unsigned" [not null]
+  nombre varchar(100) [not null]
+  fuente varchar(500) [not null]
+  latitud decimal(9,6)
+  longitud decimal(9,6)
+  indexes {
+    (municipio_id, nombre) [unique]
+    (id, municipio_id) [unique]
+  }
+}
+
+Table tipos_emergencia {
+  clave varchar(40) [pk]
+  nombre varchar(75) [not null]
+}
+
+Table prioridades {
+  clave varchar(24) [pk]
+  nombre varchar(50) [not null]
+}
+
+Table estados_emergencia {
+  clave varchar(24) [pk]
+  nombre varchar(50) [not null]
+}
+
+Table estados_verificacion {
+  clave varchar(24) [pk]
+  nombre varchar(50) [not null]
+}
+
+Table emergencias {
+  id "int unsigned" [pk, increment]
+  codigo char(15) [not null, unique]
+  titulo varchar(120) [not null]
+  tipo varchar(40) [not null]
+  descripcion text [not null]
+  municipio_id "int unsigned" [not null]
+  comunidad_id "int unsigned"
+  direccion varchar(240)
+  latitud decimal(9,6)
+  longitud decimal(9,6)
+  fecha datetime [not null]
+  usuario_id "int unsigned" [not null]
+  prioridad varchar(24) [not null]
+  estado varchar(24) [not null]
+  verificacion varchar(24) [not null]
+  responsable_id "int unsigned"
+  observaciones varchar(1000)
+  alerta_publica boolean [not null]
+  recomendaciones varchar(500)
+  creado_en timestamp [not null]
+  actualizado_en timestamp [not null]
+}
+
+Table evidencias_emergencia {
+  id "int unsigned" [pk, increment]
+  emergencia_id "int unsigned" [not null, unique]
+  mime varchar(20) [not null]
+  datos mediumblob [not null]
+  creado_en timestamp [not null]
+}
+
+Table historial_emergencias {
+  id "bigint unsigned" [pk, increment]
+  emergencia_id "int unsigned" [not null]
+  usuario_id "int unsigned" [not null]
+  detalle json [not null]
+  creado_en timestamp [not null]
+}
+
+Table personas_reportadas {
+  id "int unsigned" [pk, increment]
+  codigo char(15) [not null, unique]
+  emergencia_id "int unsigned" [not null]
+  nombre varchar(120) [not null]
+  edad "tinyint unsigned"
+  ubicacion varchar(240) [not null]
+  fecha datetime [not null]
+  estado varchar(30) [not null]
+  verificacion varchar(24) [not null]
+  responsable_id "int unsigned"
+  observaciones varchar(1000)
+  contacto varchar(120)
+  creado_en timestamp [not null]
+  actualizado_en timestamp [not null]
+}
+
+Table seguimiento_personas {
+  id "int unsigned" [pk, increment]
+  persona_id "int unsigned" [not null]
+  usuario_id "int unsigned" [not null]
+  estado varchar(30) [not null]
+  verificacion varchar(24) [not null]
+  observaciones varchar(1000) [not null]
+  creado_en timestamp [not null]
+}
+
+Table instituciones {
+  id "int unsigned" [pk, increment]
+  nombre varchar(100) [not null, unique]
+  tipo varchar(30) [not null]
+}
+
+Table equipos {
+  id "int unsigned" [pk, increment]
+  nombre varchar(100) [not null]
+  institucion_id "int unsigned" [not null]
+  responsable varchar(100) [not null]
+  telefono varchar(35)
+  municipio_id "int unsigned" [not null]
+  especialidad varchar(100)
+  integrantes "smallint unsigned" [not null]
+  estado varchar(30) [not null]
+  creado_en timestamp [not null]
+  actualizado_en timestamp [not null]
+}
+
+Table miembros_equipo {
+  usuario_id "int unsigned" [not null]
+  equipo_id "int unsigned" [not null]
+  indexes {
+    (usuario_id, equipo_id) [pk]
+  }
+}
+
+Table operaciones {
+  id "int unsigned" [pk, increment]
+  codigo char(15) [not null, unique]
+  emergencia_id "int unsigned" [not null]
+  nombre varchar(120) [not null]
+  descripcion varchar(1200) [not null]
+  responsable_id "int unsigned" [not null]
+  inicio datetime
+  fin datetime
+  estado varchar(30) [not null]
+  observaciones varchar(1000)
+  creado_en timestamp [not null]
+  actualizado_en timestamp [not null]
+}
+
+Table operacion_equipos {
+  operacion_id "int unsigned" [not null]
+  equipo_id "int unsigned" [not null]
+  creado_en timestamp [not null]
+  indexes {
+    (operacion_id, equipo_id) [pk]
+  }
+}
+
+Table avances_operaciones {
+  id "int unsigned" [pk, increment]
+  operacion_id "int unsigned" [not null]
+  usuario_id "int unsigned" [not null]
+  detalle varchar(1500) [not null]
+  creado_en timestamp [not null]
+}
+
+Table categorias_recursos {
+  clave varchar(36) [pk]
+  nombre varchar(80) [not null]
+}
+
+Table recursos {
+  id "int unsigned" [pk, increment]
+  nombre varchar(100) [not null]
+  categoria varchar(36) [not null]
+  cantidad "int unsigned" [not null]
+  minimo "int unsigned" [not null]
+  unidad varchar(35) [not null]
+  ubicacion varchar(160) [not null]
+  responsable varchar(100) [not null]
+  creado_en timestamp [not null]
+  actualizado_en timestamp [not null]
+}
+
+Table movimientos_recursos {
+  id "int unsigned" [pk, increment]
+  recurso_id "int unsigned" [not null]
+  usuario_id "int unsigned" [not null]
+  operacion_id "int unsigned"
+  tipo varchar(30) [not null]
+  cantidad "int unsigned" [not null]
+  detalle varchar(300)
+  creado_en timestamp [not null]
+}
+
+Table operacion_recursos {
+  operacion_id "int unsigned" [not null]
+  recurso_id "int unsigned" [not null]
+  cantidad "int unsigned" [not null]
+  indexes {
+    (operacion_id, recurso_id) [pk]
+  }
+}
+
+Table refugios {
+  id "int unsigned" [pk, increment]
+  nombre varchar(120) [not null]
+  municipio_id "int unsigned" [not null]
+  comunidad_id "int unsigned"
+  direccion varchar(200) [not null]
+  latitud decimal(9,6) [not null]
+  longitud decimal(9,6) [not null]
+  capacidad "int unsigned" [not null]
+  ocupacion "int unsigned" [not null]
+  responsable varchar(100) [not null]
+  telefono varchar(35)
+  servicios varchar(500)
+  activo boolean [not null]
+  revision_ocupacion varchar(500)
+  creado_en timestamp [not null]
+  actualizado_en timestamp [not null]
+}
+
+Table evacuaciones {
+  id "int unsigned" [pk, increment]
+  emergencia_id "int unsigned" [not null]
+  origen varchar(180) [not null]
+  destino varchar(180) [not null]
+  refugio_id "int unsigned"
+  personas "int unsigned" [not null]
+  equipo_id "int unsigned" [not null]
+  fecha datetime [not null]
+  estado varchar(30) [not null]
+  observaciones varchar(1000)
+  creado_en timestamp [not null]
+  actualizado_en timestamp [not null]
+}
+
+Table contactos_emergencia {
+  id "int unsigned" [pk, increment]
+  nombre varchar(120) [not null]
+  categoria varchar(30) [not null]
+  telefono varchar(35) [not null]
+  direccion varchar(180)
+  cobertura varchar(180) [not null]
+  web varchar(500)
+  fuente varchar(500) [not null]
+  fecha_verificacion date
+  latitud decimal(9,6)
+  longitud decimal(9,6)
+  verificado boolean [not null]
+  creado_en timestamp [not null]
+  actualizado_en timestamp [not null]
+}
+
+Table notificaciones {
+  id "bigint unsigned" [pk, increment]
+  usuario_id "int unsigned" [not null]
+  tipo varchar(30) [not null]
+  titulo varchar(180) [not null]
+  mensaje varchar(400) [not null]
+  emergencia_id "int unsigned"
+  leida boolean [not null]
+  creado_en timestamp [not null]
+  indexes {
+    (usuario_id, leida, id)
+  }
+}
+
+Ref: usuarios.rol > roles.clave
+Ref: sesiones.usuario_id > usuarios.id
+Ref: auditorias.usuario_id > usuarios.id
+Ref: provincias.departamento_id > departamentos.id
+Ref: municipios.provincia_id > provincias.id
+Ref: comunidades.municipio_id > municipios.id
+Ref: emergencias.(comunidad_id, municipio_id) > comunidades.(id, municipio_id)
+Ref: emergencias.tipo > tipos_emergencia.clave
+Ref: emergencias.municipio_id > municipios.id
+Ref: emergencias.usuario_id > usuarios.id
+Ref: emergencias.prioridad > prioridades.clave
+Ref: emergencias.estado > estados_emergencia.clave
+Ref: emergencias.verificacion > estados_verificacion.clave
+Ref: emergencias.responsable_id > usuarios.id
+Ref: evidencias_emergencia.emergencia_id > emergencias.id
+Ref: historial_emergencias.emergencia_id > emergencias.id
+Ref: historial_emergencias.usuario_id > usuarios.id
+Ref: personas_reportadas.emergencia_id > emergencias.id
+Ref: personas_reportadas.verificacion > estados_verificacion.clave
+Ref: personas_reportadas.responsable_id > usuarios.id
+Ref: seguimiento_personas.persona_id > personas_reportadas.id
+Ref: seguimiento_personas.usuario_id > usuarios.id
+Ref: seguimiento_personas.verificacion > estados_verificacion.clave
+Ref: equipos.institucion_id > instituciones.id
+Ref: equipos.municipio_id > municipios.id
+Ref: miembros_equipo.usuario_id > usuarios.id
+Ref: miembros_equipo.equipo_id > equipos.id
+Ref: operaciones.emergencia_id > emergencias.id
+Ref: operaciones.responsable_id > usuarios.id
+Ref: operacion_equipos.operacion_id > operaciones.id
+Ref: operacion_equipos.equipo_id > equipos.id
+Ref: avances_operaciones.operacion_id > operaciones.id
+Ref: avances_operaciones.usuario_id > usuarios.id
+Ref: recursos.categoria > categorias_recursos.clave
+Ref: movimientos_recursos.recurso_id > recursos.id
+Ref: movimientos_recursos.usuario_id > usuarios.id
+Ref: movimientos_recursos.operacion_id > operaciones.id
+Ref: operacion_recursos.operacion_id > operaciones.id
+Ref: operacion_recursos.recurso_id > recursos.id
+Ref: refugios.(comunidad_id, municipio_id) > comunidades.(id, municipio_id)
+Ref: refugios.municipio_id > municipios.id
+Ref: evacuaciones.emergencia_id > emergencias.id
+Ref: evacuaciones.refugio_id > refugios.id
+Ref: evacuaciones.equipo_id > equipos.id
+Ref: notificaciones.usuario_id > usuarios.id
+Ref: notificaciones.emergencia_id > emergencias.id
