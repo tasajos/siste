@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
 import { icon, type LatLngTuple, type Marker as LeafletMarker } from 'leaflet';
-import { GeoJSON, MapContainer, Marker, TileLayer, useMap, useMapEvents } from 'react-leaflet';
+import { GeoJSON, MapContainer, Marker, useMap, useMapEvents } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import markerIcon from 'leaflet/dist/images/marker-icon.png';
 import markerIconRetina from 'leaflet/dist/images/marker-icon-2x.png';
 import markerShadow from 'leaflet/dist/images/marker-shadow.png';
 import type { FeatureCollection } from 'geojson';
+import { OpenStreetMapTiles } from './OpenStreetMapTiles';
 
 const cochabamba: LatLngTuple = [-17.41, -66.16];
 const pin = icon({
@@ -46,11 +47,7 @@ export default function LocationMap({ position, focus, onSelect }: {
   return <>
     <div className="map-wrap" role="region" aria-label="Mapa para elegir la ubicación del incidente">
       <MapContainer center={position ?? cochabamba} zoom={position ? 14 : 11} scrollWheelZoom={false} className="map location-map">
-        <TileLayer
-          attribution='© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-          url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
-          eventHandlers={{ tileerror: () => setTilesUnavailable(true), tileload: () => setTilesUnavailable(false) }}
-        />
+        {!tilesUnavailable && <OpenStreetMapTiles eventHandlers={{ tileerror: () => setTilesUnavailable(true) }} />}
         {boundaries && <GeoJSON
           data={boundaries} interactive={false}
           attribution='<a href="/maps/FUENTES.md">GeoBolivia / geoBoundaries</a>'
@@ -66,6 +63,6 @@ export default function LocationMap({ position, focus, onSelect }: {
         />}
       </MapContainer>
     </div>
-    {tilesUnavailable && <p className="map-note">El mapa base de OpenStreetMap requiere conexión. Puedes seguir seleccionando coordenadas.</p>}
+    {tilesUnavailable && <p className="map-note">Mostrando los límites locales. Puedes seguir seleccionando coordenadas.</p>}
   </>;
 }

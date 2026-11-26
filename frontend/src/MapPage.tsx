@@ -1,9 +1,10 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router';
 import { type LatLngBoundsExpression } from 'leaflet';
-import { CircleMarker, GeoJSON, LayerGroup, LayersControl, MapContainer, Popup, TileLayer, useMap } from 'react-leaflet';
+import { CircleMarker, GeoJSON, LayerGroup, LayersControl, MapContainer, Popup, useMap } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import type { FeatureCollection } from 'geojson';
+import { OpenStreetMapTiles } from './OpenStreetMapTiles';
 import { type Data, type Page } from './api';
 import { IncidentFilters, type Filter, type Incident } from './Incidents';
 import { Failure, label, localDate, PageTitle, Pagination, queryString, Spinner, useLoad } from './ui';
@@ -31,7 +32,7 @@ export default function MapPage() {
   const contacts = useLoad<Page>('/contactos?limit=100');
   const [layers, setLayers] = useState<FeatureCollection[]>([]);
   const [layerError, setLayerError] = useState('');
-  const [tiles, setTiles] = useState(false);
+  const [tilesUnavailable, setTilesUnavailable] = useState(false);
   useEffect(() => {
     const controller = new AbortController();
     Promise.all(boundaries.map(async entry => {
@@ -54,12 +55,12 @@ export default function MapPage() {
       <div className="map-wrap">
         <MapContainer center={[-17.41, -66.16]} zoom={9} scrollWheelZoom={false} className="map" aria-label="Mapa interactivo de Cochabamba">
           <LayersControl position="topright">
-            <LayersControl.BaseLayer name="Límites · mapa local">
+            <LayersControl.BaseLayer checked={tilesUnavailable} name="Límites · mapa local">
               <LayerGroup />
             </LayersControl.BaseLayer>
-            <LayersControl.BaseLayer checked name="Mapa base de OpenStreetMap">
-              <TileLayer attribution='© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>' url="https://tile.openstreetmap.org/{z}/{x}/{y}.png" eventHandlers={{ tileerror: () => setTiles(true), tileload: () => setTiles(false) }} />
-            </LayersControl.BaseLayer>
+            {!tilesUnavailable && <LayersControl.BaseLayer checked name="Mapa base de OpenStreetMap">
+              <OpenStreetMapTiles eventHandlers={{ tileerror: () => setTilesUnavailable(true) }} />
+            </LayersControl.BaseLayer>}
             {boundaries.map((boundary, index) => layers[index] && <LayersControl.Overlay key={boundary.file} name={boundary.name} checked={index < 2}>
               <GeoJSON data={layers[index]} style={{ color: boundary.color, weight: boundary.weight, fillOpacity: 0.07 }}
                 onEachFeature={(feature, layer) => {
@@ -98,7 +99,7 @@ export default function MapPage() {
           <Fit points={locations} />
         </MapContainer>
       </div>
-      {tiles && <p className="map-note">El mapa base requiere conexión a OpenStreetMap.</p>}
+      {tilesUnavailable && <p className="map-note">Mostrando los límites locales. Puedes seguir consultando incidentes.</p>}
       <div className="map-legend">{Object.entries(colors).map(([key, color]) => <span key={key}><i style={{ background: color }} />{label(key)}</span>)}<span>Círculo hueco · verificación pendiente o descartada</span></div>
       <p className="map-note">Marcadores con coordenadas en esta página · {points.length}. Límites de referencia de 2015, publicados por geoBoundaries a partir de GeoBolivia. <Link to="/contactos">Ver directorio de servicios</Link></p>
       {contacts.data?.data.length === 0 && <p className="map-note">El directorio todavía no tiene servicios visibles para esta cuenta.</p>}

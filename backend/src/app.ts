@@ -18,10 +18,12 @@ app.disable('x-powered-by');
 app.use(helmet({
   contentSecurityPolicy: {
     directives: {
-      'img-src': ["'self'", 'blob:', 'data:', 'https://tile.openstreetmap.org', 'https://*.tile.openstreetmap.org'],
+      'img-src': ["'self'", 'blob:', 'data:', 'https://tile.openstreetmap.org'],
+      'connect-src': ["'self'", 'https://tile.openstreetmap.org'],
       'style-src': ["'self'", "'unsafe-inline'"], 'upgrade-insecure-requests': null,
     },
   },
+  referrerPolicy: { policy: 'strict-origin-when-cross-origin' },
   strictTransportSecurity: false,
 }));
 app.use('/api', cors({ origin: origins, credentials: true }), noCache);
