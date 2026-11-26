@@ -54,10 +54,10 @@ export default function MapPage() {
       <div className="map-wrap">
         <MapContainer center={[-17.41, -66.16]} zoom={9} scrollWheelZoom={false} className="map" aria-label="Mapa interactivo de Cochabamba">
           <LayersControl position="topright">
-            <LayersControl.BaseLayer checked name="Límites · mapa local">
+            <LayersControl.BaseLayer name="Límites · mapa local">
               <LayerGroup />
             </LayersControl.BaseLayer>
-            <LayersControl.BaseLayer name="Mapa base de OpenStreetMap">
+            <LayersControl.BaseLayer checked name="Mapa base de OpenStreetMap">
               <TileLayer attribution='© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>' url="https://tile.openstreetmap.org/{z}/{x}/{y}.png" eventHandlers={{ tileerror: () => setTiles(true), tileload: () => setTiles(false) }} />
             </LayersControl.BaseLayer>
             {boundaries.map((boundary, index) => layers[index] && <LayersControl.Overlay key={boundary.file} name={boundary.name} checked={index < 2}>
@@ -78,7 +78,7 @@ export default function MapPage() {
             </LayersControl.Overlay>
             <LayersControl.Overlay name="Refugios">
               <LayerGroup>
-                {refuges.data?.data.map(item => <CircleMarker key={item.id} center={[Number(item.latitud), Number(item.longitud)]} radius={7}
+                {refuges.data?.data.filter(item => item.activo).map(item => <CircleMarker key={item.id} center={[Number(item.latitud), Number(item.longitud)]} radius={7}
                   pathOptions={{ color: '#42cca3', fillOpacity: 0.8 }}><Popup><strong>{String(item.nombre)}</strong><p>{String(item.direccion)}</p><Link to="/refugios">Ver refugios</Link></Popup></CircleMarker>)}
               </LayerGroup>
             </LayersControl.Overlay>
