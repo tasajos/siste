@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type FormEvent, type ReactNode } from 'react';
+import { useEffect, useId, useRef, useState, type FormEvent, type ReactNode } from 'react';
 import { ChevronLeft, ChevronRight, CircleAlert, LoaderCircle, Search, X } from 'lucide-react';
 import { api, errorText, type Data, type Page } from './api';
 
@@ -29,14 +29,15 @@ export function PageTitle({ title, description, children }: { title: string; des
 export function Dialog({ title, close, children, narrow = false }: { title: string; close: () => void; children: ReactNode; narrow?: boolean }) {
   const node = useRef<HTMLDialogElement>(null);
   const heading = useRef<HTMLHeadingElement>(null);
+  const headingId = useId();
   useEffect(() => {
     const dialog = node.current;
     dialog?.showModal();
     heading.current?.focus();
     return () => dialog?.close();
   }, []);
-  return <dialog ref={node} className={narrow ? 'dialog narrow' : 'dialog'} aria-labelledby="dialog-heading" onCancel={event => { event.preventDefault(); close(); }}>
-    <header><h2 id="dialog-heading" ref={heading} tabIndex={-1}>{title}</h2><button className="icon" aria-label="Cerrar" onClick={close}><X size={22} /></button></header>
+  return <dialog ref={node} className={narrow ? 'dialog narrow' : 'dialog'} aria-labelledby={headingId} onCancel={event => { event.preventDefault(); close(); }}>
+    <header><h2 id={headingId} ref={heading} tabIndex={-1}>{title}</h2><button className="icon" aria-label="Cerrar" onClick={close}><X size={22} /></button></header>
     <section>{children}</section>
   </dialog>;
 }

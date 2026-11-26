@@ -47,6 +47,12 @@ La suite [integration.test.ts](../backend/tests/integration.test.ts) documenta l
 | PF-24 | Privacidad | Supertest comprueba que perfiles ciudadanos no consultan personas ni reportes pendientes de terceros |
 | PF-25 | Disponibilidad tras reiniciar | Registrar un incidente, reiniciar Ubuntu, comprobar servicios activos y volver a consultar por código |
 
+## Resultados observados
+
+- MySQL 8.4.11 en Windows, esquema independiente. Pasaron 17 pruebas automatizadas. Cubren PF-01 a PF-18, las consultas de PF-20, PF-22 y PF-24.
+- Chrome en Windows, con frontend Vite y API Express conectada a MySQL. Se verificaron la creación de cuenta, inicio de sesión, registro de emergencia, marcador y ficha, recepción del modal por Socket.IO, lectura tras recargar y exportación CSV.
+- Diseño del login comprobado a 1440 × 900 y 390 × 844. Se verificaron la imagen, la visibilidad de contraseña y el cambio a registro sin desbordamiento horizontal.
+
 ## Límites del entorno académico
 
 Los contactos, refugios y comunidades deben revisarse antes de incorporar información real. La cartografía representa límites de referencia. El sistema registra evacuaciones gestionadas por personas autorizadas. Las decisiones de atención y las indicaciones públicas corresponden al personal a cargo.

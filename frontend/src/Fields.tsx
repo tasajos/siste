@@ -1,4 +1,4 @@
-import { type ReactNode } from 'react';
+import { useState, type ReactNode } from 'react';
 import { type Data, type Page } from './api';
 import { fieldTime, label, useLoad } from './ui';
 
@@ -13,10 +13,11 @@ const optionRows = (input: Data[] | Page | undefined): Option[] => {
   return list.map(row => ({ value: String(row.clave ?? row.id), name: String(row.nombre ?? row.titulo ?? row.codigo ?? ('#' + row.id)) }));
 };
 function Choice({ field, current, onChange }: { field: Field; current: unknown; onChange?: (value: string) => void }) {
+  const [value, setValue] = useState(String(current ?? ''));
   const source = useLoad<Data[] | Page>(field.path ?? null);
   const options = field.path ? optionRows(source.data) : (field.choices ?? []).map(value => typeof value === 'string' ? { value, name: label(value) } : value);
   const missingOption = current != null && current !== '' && !options.some(option => String(option.value) === String(current));
-  return <select name={field.key} defaultValue={String(current ?? '')} required={!field.optional} onChange={event => onChange?.(event.target.value)}>
+  return <select aria-label={field.name} name={field.key} value={value} required={!field.optional} onChange={event => { setValue(event.target.value); onChange?.(event.target.value); }}>
     <option value="">{source.pending ? 'Cargando…' : 'Selecciona una opción'}</option>
     {missingOption && <option value={String(current)}>#{String(current)}</option>}
     {options.map(({ value, name }) => <option key={value} value={value}>{name}</option>)}
