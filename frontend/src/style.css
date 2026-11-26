@@ -152,6 +152,11 @@ tr:last-child td { border-bottom: 0; }
 .map-legend span { display: flex; align-items: center; gap: .3rem; }
 .map-legend i { width: 11px; height: 11px; border-radius: 50%; display: inline-block; }
 .map-note { color: var(--muted); font-size: .82rem; margin-top: .65rem; }
+.incident-location { display: grid; gap: .75rem; min-width: 0; margin: 0; padding: .85rem 0 0; border: 0; border-top: 1px solid var(--line); }
+.incident-location legend { padding-right: .55rem; font-size: 1.05rem; font-weight: 700; }
+.location-help { color: var(--muted); font-size: .86rem; }
+.location-map.leaflet-container { height: clamp(240px, 42vh, 440px); cursor: crosshair; }
+.incident-location .button { max-width: 100%; white-space: normal; }
 .dialog { box-sizing: border-box; border: 1px solid #496076; background: #142131; color: var(--white); border-radius: .9rem; width: min(calc(100% - 1.5rem), 790px); max-height: calc(100dvh - 2rem); margin: auto; overflow: auto; }
 .dialog::backdrop { background: #020810b5; }
 .dialog.narrow { max-width: 520px; border-color: #dc6871; background: #2d1d28; }

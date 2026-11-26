@@ -3,6 +3,7 @@ import { Link, useNavigate, useParams } from 'react-router';
 import { ArrowLeft, FileImage, MapPin, Pencil, Plus, ShieldCheck } from 'lucide-react';
 import { api, type Data, type Page } from './api';
 import { InputField, formValues, type Field } from './Fields';
+import { coordinateFields, IncidentLocation } from './IncidentLocation';
 import { Empty, Failure, label, localDate, PageTitle, Pagination, queryString, SearchBox, Spinner, statusLabel, Table, useLoad, useSubmit } from './ui';
 
 export type Incident = Data & { id: number; codigo: string; titulo: string; tipo: string; municipio: string; provincia: string; prioridad: string; estado: string; verificacion: string; fecha: string; latitud: number | null; longitud: number | null };
@@ -99,12 +100,22 @@ function photoData(file: File) {
 export function IncidentEditor({ user }: { user: { rol: string } }) {
   const { id } = useParams();
   const record = useLoad<Incident>(id ? '/emergencias/' + id : null);
+  const incident = record.data?.id === Number(id) ? record.data : undefined;
+
+  return <>
+    <Link className="back" to={id ? '/emergencias/' + id : '/emergencias'}><ArrowLeft size={17} /> Volver</Link>
+    <PageTitle title={id ? 'Editar emergencia' : 'Reportar emergencia'} description="Describe el incidente y registra la ubicación para facilitar su revisión." />
+    {record.error && <Failure message={record.error} />}{record.pending && <Spinner />}
+    {(!id || incident) && <IncidentForm key={id ?? 'nueva'} user={user} incident={incident} />}
+  </>;
+}
+
+function IncidentForm({ user, incident }: { user: { rol: string }; incident?: Incident }) {
+  const id = incident?.id;
   const [municipality, setMunicipality] = useState<string | null>(null);
-  const [coords, setCoords] = useState<{ latitud: number; longitud: number }>();
-  const [locationMessage, setLocationMessage] = useState('');
   const navigate = useNavigate();
-  const submit = useSubmit();
-  const selected = municipality ?? String(record.data?.municipio_id ?? '');
+  const { busy, error, submit } = useSubmit();
+  const selected = municipality ?? String(incident?.municipio_id ?? '');
   const fields: Field[] = [
     { key: 'titulo', name: 'Título del incidente', min: 4, max: 120 },
     { key: 'tipo', name: 'Tipo de emergencia', path: '/catalogos/tipos_emergencia' },
@@ -112,8 +123,6 @@ export function IncidentEditor({ user }: { user: { rol: string } }) {
     { key: 'comunidad_id', name: 'Comunidad', path: '/comunidades?municipio_id=' + (selected || '1'), optional: true },
     { key: 'direccion', name: 'Dirección o referencia', optional: true, max: 240 },
     { key: 'fecha', name: 'Fecha y hora del incidente', type: 'time', value: new Date().toISOString() },
-    { key: 'latitud', name: 'Latitud', type: 'number', optional: true, min: -90, max: 90, step: 'any' },
-    { key: 'longitud', name: 'Longitud', type: 'number', optional: true, min: -180, max: 180, step: 'any' },
     { key: 'prioridad', name: id ? 'Prioridad' : 'Prioridad preliminar', path: '/catalogos/prioridades', value: 'media' },
     { key: 'descripcion', name: 'Describe lo ocurrido', type: 'memo', min: 10, max: 2500 },
   ];
@@ -125,36 +134,24 @@ export function IncidentEditor({ user }: { user: { rol: string } }) {
     { key: 'alerta_publica', name: 'Autorizar y difundir alerta pública verificada', type: 'check' },
     { key: 'recomendaciones', name: 'Indicaciones públicas aprobadas', type: 'memo', optional: true, max: 500 },
   );
-  function geolocate() {
-    if (!navigator.geolocation) { setLocationMessage('El navegador no tiene geolocalización disponible.'); return; }
-    setLocationMessage('Obteniendo ubicación…');
-    navigator.geolocation.getCurrentPosition(({ coords }) => {
-      setCoords({ latitud: Number(coords.latitude.toFixed(6)), longitud: Number(coords.longitude.toFixed(6)) });
-      setLocationMessage('Ubicación registrada en el formulario.');
-    }, () => setLocationMessage('No se pudo obtener tu ubicación. Puedes escribir las coordenadas.'), { timeout: 7000 });
-  }
-  return <><Link className="back" to={id ? '/emergencias/' + id : '/emergencias'}><ArrowLeft size={17} /> Volver</Link>
-    <PageTitle title={id ? 'Editar emergencia' : 'Reportar emergencia'} description="Describe el incidente y registra la ubicación para facilitar su revisión." />
-    {record.error && <Failure message={record.error} />}{record.pending && <Spinner />}
-    {(!id || record.data) && <form className="panel form-grid" onSubmit={event => {
-      const form = event.currentTarget;
-      const body = formValues(form, fields);
-      const file = new FormData(form).get('evidencia');
-      void submit.submit(event, async () => {
-        if (!id && file instanceof File && file.size) body.evidencia = await photoData(file);
-        if (id) { await api.patch('/emergencias/' + id, body); navigate('/emergencias/' + id); }
-        else { const { data } = await api.post('/emergencias', body); navigate('/emergencias/' + data.id); }
-      });
-    }}>
-      {fields.map(field => {
-        const key = field.key;
-        if (key === 'comunidad_id') return <InputField key={key + selected} field={field} record={municipality === null ? record.data : undefined} />;
-        if (key === 'latitud' || key === 'longitud') return <InputField key={key + String(coords?.[key])} field={field} record={coords ?? record.data} />;
-        return <InputField key={key} field={field} record={record.data} onChange={key === 'municipio_id' ? setMunicipality : undefined} />;
-      })}
-      <div className="wide actions"><button className="button" type="button" onClick={geolocate}><MapPin size={17} /> Usar mi ubicación</button><span role="status">{locationMessage}</span></div>
-      {!id && <label className="wide"><span><FileImage size={17} /> Fotografía opcional, hasta 2 MB</span><input type="file" name="evidencia" accept="image/jpeg,image/png,image/webp" /></label>}
-      <div className="wide">{submit.error && <Failure message={submit.error} />}<button className="button primary" disabled={submit.busy}>{submit.busy ? 'Guardando…' : id ? 'Guardar cambios' : 'Enviar reporte'}</button></div>
-    </form>}
-  </>;
+
+  return <form className="panel form-grid" onSubmit={event => {
+    const form = event.currentTarget;
+    const body = formValues(form, [...fields, ...coordinateFields]);
+    const file = new FormData(form).get('evidencia');
+    void submit(event, async () => {
+      if (!id && file instanceof File && file.size) body.evidencia = await photoData(file);
+      if (id) { await api.patch('/emergencias/' + id, body); navigate('/emergencias/' + id); }
+      else { const { data } = await api.post('/emergencias', body); navigate('/emergencias/' + data.id); }
+    });
+  }}>
+    {fields.map(field => {
+      const key = field.key;
+      if (key === 'comunidad_id') return <InputField key={key + selected} field={field} record={municipality === null ? incident : undefined} />;
+      return <InputField key={key} field={field} record={incident} onChange={key === 'municipio_id' ? setMunicipality : undefined} />;
+    })}
+    <IncidentLocation initial={incident} />
+    {!id && <label className="wide"><span><FileImage size={17} /> Fotografía opcional, hasta 2 MB</span><input type="file" name="evidencia" accept="image/jpeg,image/png,image/webp" /></label>}
+    <div className="wide">{error && <Failure message={error} />}<button className="button primary" disabled={busy}>{busy ? 'Guardando…' : id ? 'Guardar cambios' : 'Enviar reporte'}</button></div>
+  </form>;
 }
