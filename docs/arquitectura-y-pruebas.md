@@ -53,6 +53,11 @@ La suite [integration.test.ts](../backend/tests/integration.test.ts) documenta l
 - Chrome en Windows, con frontend Vite y API Express conectada a MySQL. Se verificaron la creación de cuenta, inicio de sesión, registro de emergencia, marcador y ficha, recepción del modal por Socket.IO, lectura tras recargar y exportación CSV.
 - Diseño del login comprobado a 1440 × 900 y 390 × 844. Se verificaron la imagen, la visibilidad de contraseña y el cambio a registro sin desbordamiento horizontal.
 
+- UbuntuTrabajo, Ubuntu Desktop 26.04.1 LTS. Pasaron las 17 pruebas con MySQL 8.4.13 en un esquema independiente. El navegador, conectado al servicio de Ubuntu por el puerto 3030 del anfitrión, verificó el registro, inicio de sesión, mapa, alerta crítica y CSV con datos de simulacro.
+- Red entre VM, PF-21 y PF-23. Desde win11a, Vite en el puerto 5173 consultó la API en 192.168.56.20:3000. Las solicitudes directa y a través del proxy devolvieron estado ok y conexión a MySQL.
+- Persistencia tras reinicio, PF-25. Se comprobó un arranque nuevo de Ubuntu, el inicio automático de MySQL y Express y la recuperación de la emergencia ficticia EM-123BA0281B6B con estado de verificación conservado.
+- El modelo ER se analizó correctamente con el parser DBML. Contiene 31 tablas y 46 relaciones.
+
 ## Límites del entorno académico
 
 Los contactos, refugios y comunidades deben revisarse antes de incorporar información real. La cartografía representa límites de referencia. El sistema registra evacuaciones gestionadas por personas autorizadas. Las decisiones de atención y las indicaciones públicas corresponden al personal a cargo.
